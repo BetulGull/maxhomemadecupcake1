@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: url('onlineshopping2.jpeg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        header {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        header h1, header p, nav {
+            margin: 0 10px;
+        }
+
+        header p {
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        header p span {
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        nav ul li {
+            margin: 0;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #000;
+        }
+
+        main {
+            padding: 60px;
+        }
+
+        main h1 {
+            color: #fff;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+    </style>
+</head>
+<body>
+<header>
+
+
+    <p>
+        <span th:text="${username}"></span>
+        <a th:if="${#authorization.expression('isAnonymous()')}" href="/login">Login</a>
+        <a th:if="${#authorization.expression('isAuthenticated()')}" href="/logout">Logout</a>
+    </p>
+    <nav>
+        <ul>
+            <a  th:if="${isAdmin}" href="/customers">Customer Management</a> <!-- Admin only -->
+            <a href="/Product">Product Management</a> <!-- For all users -->
+            <a href="/orders">Order Management</a> <!-- For all users -->
+            <a th:if="${isAdmin}" href="/admin/users">Users</a> <!-- Admin only -->
+             <!-- Debugging -->
+
+
+        </ul>
+    </nav>
+</header>
+<main>
+    <h1>Welcome, <span th:text="${username}">User</span>!</h1>
+</main>
+</body>
+</html>

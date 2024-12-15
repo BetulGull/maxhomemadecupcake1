@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{header}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100" layout:fragment="body">
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <h2 class="text-center">Register</h2>
+            <form th:action="@{/register}" th:object="${user}" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" th:field="*{username}" class="form-control" placeholder="Enter your username" />
+                    <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger">Username Error</div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" th:field="*{email}" class="form-control" placeholder="Enter your email" />
+                    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger">Email Error</div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" th:field="*{password}" class="form-control" placeholder="Enter your password" />
+                    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger">Password Error</div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" th:field="*{rePassword}" class="form-control" placeholder="Confirm your password" />
+                    <div th:if="${#fields.hasErrors('rePassword')}" th:errors="*{rePassword}" class="text-danger">Confirm Password Error</div>
+                </div>
+                <div class="form-group">
+                    <label for="file">Profile Picture</label>
+                    <input type="file" id="file" name="file" class="form-control" accept="image/*">
+                </div>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary mt-3">Register</button>
+                </div>
+                <div class="form-group text-center">
+                    <a th:href="@{/}" class="btn btn-primary">Back</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <style>
+
+        .action-links {
+            display: inline-block;
+            margin-bottom: 10px;
+            background-color: deepskyblue;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: black;
+        }
+
+        .action-links:hover{
+            color: darkred;
+        }
+
+
+         body {
+             background-image: url('/product.jpg');
+             background-size: cover;
+         }
+        .container-fluid
+        {
+            color: darkred;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container-fluid text-center">
+    <div ><a onclick="gobackhome()">Home</a></div>
+    <div><h1>Product List</h1></div>
+    <div th:if="${message}" class="alert alert-success" role="alert">
+        <span th:text="${message}"></span>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+    <div>
+        <table class="table table-bordered">
+            <thead >
+            <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>SUPPLIER</th>
+                <th>PRICE</th>
+                <div th:if="${isAdmin}">
+                    <div class="action-links">
+                        <a class="h3" th:href="@{/Product/create}">Add Product</a>
+                    </div>
+                </div>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${productList}">
+                <td th:text="${product.id}"></td>
+                <td th:text="${product.name}"></td>
+                <td th:text="${product.supplier}"></td>
+                <td th:text="${product.price}"></td>
+                <td>
+                    <div class="action-links">
+                        <a class="h4 " th:href="@{'/Product/edit/' + ${product.id}}" >EDIT</a>
+                    </div>
+                    <div class="action-links">
+                        <a class="h5" th:href="@{'/Product/delete/' + ${product.id}}" >DELETE</a>
+                    </div>
+                    <div class="action-links">
+                        <a class="h5" th:href="@{'/Product/porderlist/' + ${product.id}}" >MAKE A ORDER</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    function gobackhome(){
+        window.location='/pindex';
+    }
+
+</script>
+</body>
+</html>

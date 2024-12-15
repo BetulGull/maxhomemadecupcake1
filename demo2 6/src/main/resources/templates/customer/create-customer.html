@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>New Customer</title>
+</head>
+
+<body>
+<div class="container-fluid" align="center">
+    <h1>Create New Customer</h1>
+    <br />
+    <form action="#" th:action="@{/customers/add}" th:object="${customer}" method="post" enctype="multipart/form-data">
+        <table border="0" cellpadding="10">
+            <tr>
+                <td><input type="hidden" th:field="*{id}" /></td>
+            </tr>
+            <tr>
+                <td>Customer Name:</td>
+                <td><input type="text" th:field="*{name}" required/></td>
+            </tr>
+            <tr>
+                <td>Address:</td>
+                <td><input type="text" th:field="*{address}" /></td>
+            </tr>
+            <tr>
+                <td>Telephone:</td>
+                <td><input type="text" th:field="*{telephone}" /></td>
+            </tr>
+            <tr>
+                <td>Photo:</td>
+                <td><input type="file" name="file" /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><button type="submit">Save</button></td>
+                <td colspan="2"><button type="button" onclick="cancelform()">Cancel</button></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript">
+    function cancelform(){
+        window.location='/customers';
+    }
+</script>
+</body>
+</html>

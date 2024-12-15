@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <style>
+        .action-links {
+            display: inline-block;
+            margin-bottom: 10px;
+            background-color: deepskyblue;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: black;
+        }
+        .action-links:hover {
+            color: darkred;
+        }
+        body {
+            background-image: url('/customer.jpg');
+            background-size: cover;
+        }
+        .container-fluid {
+            color: darkred;
+        }
+        .customer-photo {
+            max-width: 100px;
+            max-height: 100px;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid text-center">
+    <div><a onclick="gobackhome()">Home</a></div>
+    <div><h1>Customer List</h1></div>
+    <div th:if="${message}" class="alert alert-success" role="alert">
+        <span th:text="${message}"></span>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+        <p th:text="${errorMessage}"></p>
+    </div>
+    <div class="add-customer-btn">
+        <a th:href="@{/customers/add}" class="btn btn-primary">Add Customer</a>
+    </div>
+    <div>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>ADDRESS</th>
+                <th>TELEPHONE</th>
+                <th>PHOTO</th>
+                <th>ACTIONS</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="customer : ${customers}">
+                <td th:text="${customer.id}"></td>
+                <td th:text="${customer.name}"></td>
+                <td th:text="${customer.address}"></td>
+                <td th:text="${customer.telephone}"></td>
+                <td>
+                    <img th:if="${customer.photoUrl != null}" th:src="@{'/api/files/images/' + ${customer.photoUrl}}" alt="Customer Photo" class="customer-photo">
+                    <span th:if="${customer.photoUrl == null}">No Photo</span>
+                </td>
+                <td>
+                    <div class="action-links">
+                        <a class="h4" th:href="@{'/customers/update/' + ${customer.id}}">EDIT</a>
+                    </div>
+                    <div class="action-links">
+                        <a class="h5" th:href="@{'/customers/delete/' + ${customer.id}}">DELETE</a>
+                    </div>
+                    <div class="action-links">
+                        <a class="h5" th:href="@{'/customers/corderlist/' + ${customer.id}}">MAKE AN ORDER</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    function gobackhome(){
+        window.location='/';
+    }
+</script>
+</body>
+</html>

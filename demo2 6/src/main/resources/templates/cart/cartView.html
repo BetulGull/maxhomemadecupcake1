@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <title>Cart</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container">
+  <h1>Your Cart</h1>
+  <div th:if="${cart != null && not #lists.isEmpty(cart.items)}">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th> <!-- Add a new column for total price -->
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="cartItem : ${cart.items}">
+        <td th:text="${cartItem.product.name}"></td>
+        <td th:text="${cartItem.quantity}"></td>
+        <td th:text="${cartItem.product.price}"></td>
+        <td th:text="${cartItem.product.price * cartItem.quantity}"></td> <!-- Calculate total price for each cart item -->
+      </tr>
+      </tbody>
+    </table>
+    <form action="/cart/checkout" method="post">
+      <button type="submit" class="btn btn-primary">Proceed to Checkout</button>
+    </form>
+  </div>
+  <div th:if="${cart == null || #lists.isEmpty(cart.items)}">
+    <p>Your cart is empty.</p>
+  </div>
+</div>
+</body>
+</html>

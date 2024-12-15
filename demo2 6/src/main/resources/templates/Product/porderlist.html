@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Create an Order</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+</head>
+
+<body>
+<div class="container-fluid" align="center">
+    <h1>Create an order</h1>
+    <br />
+    <form action="#" th:action="@{/Product/createp/{id}(id=${product.id})}" th:object="${order}" method="post">
+
+        <table border="0" cellpadding="10">
+            <tr style="color: purple">
+                <td align="center">
+                    <label for="product">Product Name:</label>
+                    <input type="hidden" name="product" th:value="${product.id}">
+                    <input type="text" id="product" class="form-control" name="product" th:value="${product.name}" readonly>
+                </td>
+            </tr>
+
+            <tr>
+                <td><input type="hidden" th:field="*{id}" required /></td>
+            </tr>
+
+            <!-- Remove the customer section since it's no longer needed -->
+            <!-- <tr>
+                <label for="customer">Customer:</label>
+                <td>
+                    <input type="text" id="customer" class="form-control" th:value="${currentCustomer.name}" readonly>
+                    <input type="hidden" th:field="*{customer}" th:value="${currentCustomer.id}" />
+                </td>
+            </tr> -->
+
+
+            <tr>
+                <td>Quantity:</td>
+                <td><input type="number" id="quantity" name="quantity" class="form-control" min="1" value="1" required /></td>
+            </tr>
+
+
+            <tr>
+                <td colspan="2"><button type="submit">Add to cart</button></td>
+                <td colspan="2"><button onclick="cancelForm()" type="button">Cancel</button></td>
+            </tr>
+        </table>
+
+    </form>
+</div>
+<div th:if="${message}">
+    <p th:text="${message}"></p>
+</div>
+<div th:if="${errorMessage}">
+    <p th:text="${errorMessage}"></p>
+</div>
+<script type="text/javascript">
+    function cancelForm(){
+        window.location='/index';
+    }
+</script>
+</body>
+</html>

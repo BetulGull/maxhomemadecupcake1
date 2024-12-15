@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order List</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+
+    <style>
+
+        .action-links {
+            display: inline-block;
+            margin-bottom: 10px;
+            background-color: deepskyblue;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: black;
+        }
+        body {
+            background-image: url('/onlineshopping5.png');
+            background-size: cover;
+        }
+
+        .action-links:hover{
+            color: darkred;
+        }
+    </style>
+
+</head>
+<body>
+
+<div align="center">
+    <div ><a onclick="gobackhome()">Home</a></div>
+    <h1>Order List</h1>
+    <div th:if="${message}" class="alert alert-success" role="alert">
+        <span th:text="${message}"></span>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+        <p th:text="${errorMessage}"></p>
+    </div>
+    <table border="1" class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer Name</th>
+            <th>Product Name</th>
+            <th>Date</th>
+            <th>Delivery Status</th>
+            <th>City</th>
+            <th>
+                <div class="action-links">
+                    <a class="h3" th:href="@{/order/add}">Add order</a>
+                </div>
+            </th>
+        </tr>
+        </thead>
+        <tbody >
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.getId()}"></td>
+            <td>
+                <span th:if="${order.customer != null}" th:text="${order.customer.getName()}">Customer Name</span>
+                <span th:unless="${order.customer != null}">Unknown Customer</span>
+            </td>
+
+            <td>
+                <span th:if="${order.product != null}" th:text="${order.getProduct().getName()}">Product Name</span>
+
+            </td>
+            <td th:text="${order.date}"></td>
+            <td th:text="${order.deliveryStatus}"></td>
+            <td th:text="${order.city}"></td>
+            <td>
+                <div class="action-links"> <a th:href="@{'/order/update/' + ${order.id}}">Edit</a></div>
+                <div class="action-links"><a th:href="@{'/orders/delete/' + ${order.id}}">Delete</a></div>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    function gobackhome(){
+        window.location='/oindex';
+    }
+
+</script>
+</body>
+</html>

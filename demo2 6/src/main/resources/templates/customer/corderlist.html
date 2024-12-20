@@ -31,13 +31,13 @@
             </tr>
 
             <tr>
-                <label for="products">Select Product:</label>
-                <select id="products" class="form-control" th:field="*{product}">
+                <label for="cupcakes">Select Product:</label>
+                <select id="cupcakes" class="form-control" th:field="*{cupcake}">
 
                 <option value="">-- Select Product --</option>
-                    <option th:each="product : ${products}"
-                            th:value="${product.id}"
-                            th:text="${product.name}">product
+                    <option th:each="cupcake : ${cupcakes}"
+                            th:value="${cupcake.id}"
+                            th:text="${cupcake.name}">cupcake
                     </option>
 
                 </select>

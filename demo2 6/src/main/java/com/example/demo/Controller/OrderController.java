@@ -4,7 +4,7 @@ import com.example.demo.Model.*;
 import com.example.demo.Repository.CartRepository;
 import com.example.demo.Repository.CustomerRepository;
 import com.example.demo.Repository.OrderRepository;
-import com.example.demo.Repository.ProductRepository;
+import com.example.demo.Repository.CupcakeRepository;
 import com.example.demo.Services.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +20,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Date;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Controller
 public class OrderController {
@@ -31,20 +28,20 @@ public class OrderController {
 
     private OrderService orderService;
     private final CartService cartService;
-    private final ProductService productService;
+    private final CupcakeService cupcakeService;
     private final CustomerService customerService;
     private OrderRepository orderRepository;
     private CustomerRepository customerRepository;
-    private ProductRepository productRepository;
+    private CupcakeRepository productRepository;
     private CartRepository cartRepository;
 
 
     @Autowired
-    public OrderController(OrderService orderService, ProductRepository productRepository, ProductService productService,
+    public OrderController(OrderService orderService, CupcakeRepository productRepository, CupcakeService cupcakeService,
                            CustomerService customerService, OrderRepository orderRepository,
                            CustomerRepository customerRepository, CartService cartService, CartRepository cartRepository) {
         this.orderService = orderService;
-        this.productService = productService;
+        this.cupcakeService = cupcakeService;
         this.customerService = customerService;
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
@@ -68,15 +65,19 @@ public class OrderController {
     @GetMapping("/Product/porderlist/{id}")
     public String showPorderListPage(Model model, @PathVariable("id") Long id, RedirectAttributes ra) {
         Order order = new Order();
-        Product product = productService.findById(id);
+        Cupcake cupcake = cupcakeService.findById(id);
 
+        if (cupcake == null) {
+            ra.addFlashAttribute("errorMessage", "Cupcake not found.");
+            return "redirect:/Product"; // Eğer cupcake bulunamazsa, hata sayfasına yönlendirin.
+        }
 
-        model.addAttribute("order", order); // Add the order object
-        model.addAttribute("product", product); // Add the product object
+        model.addAttribute("order", order); // Order nesnesini şablona ekliyoruz.
+        model.addAttribute("cupcake", cupcake); // Cupcake nesnesini şablona ekliyoruz.
 
-
-        return "Product/porderlist"; // Return the order creation form view
+        return "Product/porderlist"; // porderlist.html şablonunu döndür.
     }
+
 
 
     public String getCurrentUsername() {
@@ -95,8 +96,8 @@ public class OrderController {
         }
 
         Customer customer = customerRepository.findByUsername(username);
-        Product product = productService.findById(productId);
-        if (product == null) {
+        Cupcake cupcake = cupcakeService.findById(productId);
+        if (cupcake == null) {
             ra.addFlashAttribute("errorMessage", "Product not found.");
             return "redirect:/errorPage"; // This could be causing a loop if errorPage redirects back
         }
@@ -108,7 +109,7 @@ public class OrderController {
             cart.setCustomer(customer);
         }
 
-        cart.addItem(product, quantity); // Add product to cart, automatically updates the total
+        cart.addItem(cupcake, quantity); // Add product to cart, automatically updates the total
         session.setAttribute("cart", cart);
 
         // Save the cart (if necessary)
@@ -130,7 +131,7 @@ public class OrderController {
             ra.addFlashAttribute("message", "The order was successfully added");
         } catch (OrderAlreadyExistsException e) {
             ra.addFlashAttribute("errorMessage", e.getMessage());
-        } catch (CustomerNotFoundException | ProductNotFoundException e) {
+        } catch (CustomerNotFoundException | CupcakeNotFoundException e) {
             ra.addFlashAttribute("errorMessage", e.getMessage());
         }
         return "redirect:/orders";
@@ -190,7 +191,7 @@ public class OrderController {
         try {
             orderService.updateOrder(orderv);
             ra.addFlashAttribute("message", "The order was successfully updated");
-        }catch (CustomerNotFoundException |ProductNotFoundException e)
+        }catch (CustomerNotFoundException | CupcakeNotFoundException e)
         {
             ra.addFlashAttribute("errorMessage", e.getMessage());
         }
@@ -202,11 +203,11 @@ public class OrderController {
     public String showCorderListPage(Model model, @PathVariable("id") Long id, RedirectAttributes ra) {
         Order o = new Order();
         Customer customer = customerService.findById(id);
-        List<Product> products= (List<Product>) productRepository.findAll();
+        List<Cupcake> cupcakes = (List<Cupcake>) productRepository.findAll();
 
         model.addAttribute("order", o);
         model.addAttribute("customer", customer);
-        model.addAttribute("products",products);
+        model.addAttribute("products", cupcakes);
         //model.addAttribute("product_name", o.getProduct().getName());
         //model.addAttribute("customerName", customerService.findCustomerNameById(id));
         // model.addAttribute("product_name", productService.findProductNameById(id));
@@ -224,7 +225,7 @@ public class OrderController {
         order.setDeliveryStatus(order.getDeliveryStatus());
         order.setCity(order.getCity());
         order.setCustomer(order.getCustomer());
-        order.setProduct(order.getProduct());
+        order.setCupcake(order.getCupcake());
         try {
             orderService.saveOrder(order);
             ra.addFlashAttribute("message", "The order was successfully added");
@@ -259,11 +260,9 @@ public class OrderController {
             return "redirect:/cart";  // Redirect back to the cart page if it's empty
         }
 
-        // Create the order from the cart
         try {
             Order order = cartService.checkout(cart);
             session.removeAttribute("cart"); // Clear cart after checkout
-
             redirectAttributes.addFlashAttribute("message", "Order created successfully");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Error during checkout: " + e.getMessage());
@@ -281,15 +280,16 @@ public class OrderController {
 
 
     @GetMapping("/orders/delete/{id}")
-    public String deleteOrder(@PathVariable("id") Long id , RedirectAttributes ra) {
+    public String deleteOrder(@PathVariable("id") Long id, RedirectAttributes ra) {
         try {
             orderService.deleteOrder(id);
             ra.addFlashAttribute("message", "Order deleted successfully");
         } catch (OrderNotFoundException e) {
-            ra.addFlashAttribute("error", "Failed to delete order: " + e.getMessage());
-
+            ra.addFlashAttribute("errorMessage", "Failed to delete order: " + e.getMessage()); // 'error' yerine 'errorMessage' kullanılıyor
         }
         return "redirect:/orders";
     }
+
+
 }
 

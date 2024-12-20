@@ -9,24 +9,24 @@
 <div class="container-fluid" align="center">
     <h1>Create New Product</h1>
     <br />
-    <form action="#" th:action="@{/Product/save}" th:object="${product}" method="post">
+    <form action="#" th:action="@{/Product/save}" th:object="${cupcake}" method="post">
 
         <table border="0" cellpadding="10">
             <tr>
 
-                <td><input type="hidden" th:field="*{id}" required /></td>
+                <td><input type="hidden" th:field="*{cupcake.id}" required /></td>
             </tr>
             <tr>
                 <td>Product Name:</td>
-                <td><input type="text" th:field="*{name}"  required/></td>
+                <td><input type="text" th:field="*{cupcake.name}"  required/></td>
             </tr>
             <tr>
                 <td>Supplier:</td>
-                <td><input type="text" th:field="*{supplier}" /></td>
+                <td><input type="text" th:field="*{cupcake.supplier}" /></td>
             </tr>
             <tr>
                 <td>Price:</td>
-                <td><input type="text" th:field="*{price}" /></td>
+                <td><input type="text" th:field="*{cupcake.price}" /></td>
             </tr>
             <tr>
                 <td colspan="2"><button type="submit">Save </button> </td>

@@ -11,7 +11,7 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Product product;
+    private Cupcake cupcake;
 
     private int quantity;
     private double totalPrice;
@@ -25,12 +25,12 @@ public class CartItem {
         this.id = id;
     }
 
-    public Product getProduct() {
-        return product;
+    public Cupcake getCupcake() {
+        return cupcake;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setCupcake(Cupcake cupcake) {
+        this.cupcake = cupcake;
     }
 
     public int getQuantity() {
@@ -39,7 +39,7 @@ public class CartItem {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-        this.totalPrice = this.product.getPrice() * this.quantity; // Recalculate total price when quantity changes
+        this.totalPrice = this.cupcake.getPrice() * this.quantity; // Recalculate total price when quantity changes
     }
 
     public double getTotalPrice() {

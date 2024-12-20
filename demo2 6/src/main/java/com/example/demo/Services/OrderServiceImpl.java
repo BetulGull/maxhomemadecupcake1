@@ -1,16 +1,13 @@
 package com.example.demo.Services;
 
 import com.example.demo.Controller.OrderAlreadyExistsException;
-import com.example.demo.Services.OrderNotFoundException;
+import com.example.demo.Model.Cupcake;
 import com.example.demo.Model.Customer;
 import com.example.demo.Model.Order;
-import com.example.demo.Model.Product;
 import com.example.demo.Repository.CustomerRepository;
 import com.example.demo.Repository.OrderRepository;
-import com.example.demo.Repository.ProductRepository;
+import com.example.demo.Repository.CupcakeRepository;
 import com.example.demo.DTOs.Orderview;
-import com.example.demo.Services.CustomerNotFoundException;
-import com.example.demo.Services.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +23,7 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private CustomerRepository crepo;
     @Autowired
-    private ProductRepository productRepository;
+    private CupcakeRepository productRepository;
 
     @Override
     public List<Order> getAllOrders() {
@@ -44,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean orderAlreadyExists(Order order) {
         // Check if an order with the same customer and product already exists
-        Optional<Order> existingOrder = orderRepository.findByCustomerAndProduct(order.getCustomer(), order.getProduct());
+        Optional<Order> existingOrder = orderRepository.findByCustomerAndCupcake(order.getCustomer(), order.getCupcake());
         return existingOrder.isPresent();
     }
 
@@ -57,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order createOrder(Orderview orderview) throws OrderAlreadyExistsException, CustomerNotFoundException, ProductNotFoundException {
+    public Order createOrder(Orderview orderview) throws OrderAlreadyExistsException, CustomerNotFoundException, CupcakeNotFoundException {
         // Check if an order with the same ID already exists
         Long count = orderRepository.countById(orderview.getId());
         if (count != null && count > 0) {
@@ -71,9 +68,9 @@ public class OrderServiceImpl implements OrderService {
         }
 
         // Find the product based on the provided name
-        Product product = productRepository.findByName(orderview.getProductName());
-        if (product == null) {
-            throw new ProductNotFoundException("Product not found with name: " + orderview.getProductName());
+        Cupcake cupcake = productRepository.findByName(orderview.getProductName());
+        if (cupcake == null) {
+            throw new CupcakeNotFoundException("Product not found with name: " + orderview.getProductName());
         }
 
         // Create and save the new order
@@ -82,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
         order.setCity(orderview.getCity());
         order.setDate(orderview.getDate());
         order.setDeliveryStatus(orderview.getDeliveryStatus());
-        order.setProduct(product);
+        order.setCupcake(cupcake);
         order.setCustomer(customer);
 
         return orderRepository.save(order);
@@ -95,7 +92,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void updateOrder(Order order) throws OrderNotFoundException, CustomerNotFoundException, ProductNotFoundException {
+    public void updateOrder(Order order) throws OrderNotFoundException, CustomerNotFoundException, CupcakeNotFoundException {
         // Find the order by ID
         Optional<Order> optionalOrder = orderRepository.findById(order.getId());
         if (optionalOrder.isPresent()) {
@@ -107,11 +104,11 @@ public class OrderServiceImpl implements OrderService {
             existingOrder.setDate(order.getDate());
 
             // Find and update product
-            Product product = productRepository.findByName(order.getProduct().getName());
-            if (product == null) {
-                throw new ProductNotFoundException("Product not found with name: " + order.getProduct().getName());
+            Cupcake cupcake = productRepository.findByName(order.getCupcake().getName());
+            if (cupcake == null) {
+                throw new CupcakeNotFoundException("Product not found with name: " + order.getCupcake().getName());
             }
-            existingOrder.setProduct(product);
+            existingOrder.setCupcake(cupcake);
 
             // Find and update customer
             Customer customer = crepo.findByName(order.getCustomer().getName());
@@ -137,8 +134,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order findByCustomerAndProduct(Customer customer, Product product) {
+    public Order findByCustomerAndProduct(Customer customer, Cupcake cupcake) {
         // Delegate the call to the repository
-        return orderRepository.findByCustomerAndProduct(customer, product).orElse(null);
+        return orderRepository.findByCustomerAndCupcake(customer, cupcake).orElse(null);
     }
 }

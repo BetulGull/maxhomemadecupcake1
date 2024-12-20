@@ -3,9 +3,8 @@ package com.example.demo.Model;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,7 +39,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Product product;
+    private Cupcake cupcake;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")

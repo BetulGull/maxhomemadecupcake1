@@ -57,10 +57,10 @@ public class Cart {
     }
 
     // addItem method to add a product to the cart
-    public void addItem(Product product, int quantity) {
+    public void addItem(Cupcake cupcake, int quantity) {
         // Check if the product already exists in the cart
         for (CartItem item : items) {
-            if (item.getProduct().equals(product)) {
+            if (item.getCupcake().equals(cupcake)) {
                 item.setQuantity(item.getQuantity() + quantity);  // Increase quantity if the product is already in the cart
                 recalculateTotalAmount();  // Recalculate total when quantity changes
                 return;
@@ -68,7 +68,7 @@ public class Cart {
         }
         // If product is not in the cart, create a new CartItem and add it
         CartItem newItem = new CartItem();
-        newItem.setProduct(product);
+        newItem.setCupcake(cupcake);
         newItem.setQuantity(quantity);  // Set the quantity specified by the user
         items.add(newItem);
         recalculateTotalAmount();  // Recalculate total after adding a new item
@@ -78,7 +78,7 @@ public class Cart {
     private void recalculateTotalAmount() {
         totalAmount = 0;
         for (CartItem item : items) {
-            totalAmount += item.getProduct().getPrice() * item.getQuantity();
+            totalAmount += item.getCupcake().getPrice() * item.getQuantity();
         }
     }
 }

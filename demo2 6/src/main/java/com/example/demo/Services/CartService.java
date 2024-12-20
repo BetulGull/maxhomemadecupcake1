@@ -73,7 +73,7 @@ public class CartService {
         // Convert each CartItem into an OrderItem
         for (CartItem cartItem : cart.getItems()) {
             OrderItem orderItem = new OrderItem();
-            orderItem.setProduct(cartItem.getProduct());
+            orderItem.setCupcake(cartItem.getCupcake());
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setTotalPrice(cartItem.getTotalPrice());
 
@@ -108,7 +108,7 @@ public class CartService {
             for (CartItem cartItem : cart.getItems()) {  // Accessing CartItems from Cart
                 Order order = new Order();
                 order.setCustomer(customer);
-                order.setProduct(cartItem.getProduct());  // Access Product via CartItem
+                order.setCupcake(cartItem.getCupcake());  // Access Product via CartItem
                 //order.setQuantity(cartItem.getQuantity());  // Access Quantity via CartItem
                 order.setDate(new Date());
 

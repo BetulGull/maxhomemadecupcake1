@@ -21,7 +21,7 @@
 
 
          body {
-             background-image: url('/product.jpg');
+             background-image: url('/cupcake.jpg');
              background-size: cover;
          }
         .container-fluid
@@ -34,7 +34,7 @@
 <body>
 <div class="container-fluid text-center">
     <div ><a onclick="gobackhome()">Home</a></div>
-    <div><h1>Product List</h1></div>
+    <div><h1>MENU</h1></div>
     <div th:if="${message}" class="alert alert-success" role="alert">
         <span th:text="${message}"></span>
     </div>
@@ -59,20 +59,22 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="product : ${productList}">
-                <td th:text="${product.id}"></td>
-                <td th:text="${product.name}"></td>
-                <td th:text="${product.supplier}"></td>
-                <td th:text="${product.price}"></td>
+            <tr th:each="cupcake : ${cupcakeList}">
+                <td th:text="${cupcake.id}"></td>
+                <td th:text="${cupcake.name}"></td>
+                <td th:text="${cupcake.supplier}"></td>
+                <td th:text="${cupcake.price}"></td>
                 <td>
+                    <div th:if="${isAdmin}">
                     <div class="action-links">
-                        <a class="h4 " th:href="@{'/Product/edit/' + ${product.id}}" >EDIT</a>
+                        <a class="h4 " th:href="@{'/Product/edit/' + ${cupcake.id}}" >EDIT</a>
                     </div>
                     <div class="action-links">
-                        <a class="h5" th:href="@{'/Product/delete/' + ${product.id}}" >DELETE</a>
+                        <a class="h5" th:href="@{'/Product/delete/' + ${cupcake.id}}" >DELETE</a>
+                    </div>
                     </div>
                     <div class="action-links">
-                        <a class="h5" th:href="@{'/Product/porderlist/' + ${product.id}}" >MAKE A ORDER</a>
+                        <a class="h5" th:href="@{'/Product/porderlist/' + ${cupcake.id}}" >MAKE A ORDER</a>
                     </div>
                 </td>
             </tr>

@@ -20,10 +20,10 @@
       </thead>
       <tbody>
       <tr th:each="cartItem : ${cart.items}">
-        <td th:text="${cartItem.product.name}"></td>
+        <td th:text="${cartItem.cupcake.name}"></td>
         <td th:text="${cartItem.quantity}"></td>
-        <td th:text="${cartItem.product.price}"></td>
-        <td th:text="${cartItem.product.price * cartItem.quantity}"></td> <!-- Calculate total price for each cart item -->
+        <td th:text="${cartItem.cupcake.price}"></td>
+        <td th:text="${cartItem.cupcake.price * cartItem.quantity}"></td> <!-- Calculate total price for each cart item -->
       </tr>
       </tbody>
     </table>

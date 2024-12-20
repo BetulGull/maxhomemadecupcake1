@@ -10,14 +10,14 @@
 <div class="container-fluid" align="center">
     <h1>Create an order</h1>
     <br />
-    <form action="#" th:action="@{/Product/createp/{id}(id=${product.id})}" th:object="${order}" method="post">
+    <form action="#" th:action="@{/Product/createp/{id}(id=${cupcake.id})}" th:object="${order}" method="post">
 
         <table border="0" cellpadding="10">
             <tr style="color: purple">
                 <td align="center">
-                    <label for="product">Product Name:</label>
-                    <input type="hidden" name="product" th:value="${product.id}">
-                    <input type="text" id="product" class="form-control" name="product" th:value="${product.name}" readonly>
+                    <label for="cupcake">The Type of Cupcake :</label>
+                    <input type="hidden" name="cupcake" th:value="${cupcake.id}">
+                    <input type="text" id="cupcake" class="form-control" name="cupcake" th:value="${cupcake.name}" readonly>
                 </td>
             </tr>
 

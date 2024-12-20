@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "Product")
-public class Product {
+@Table(name = "Cupcake")
+public class Cupcake {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,13 +16,13 @@ public class Product {
     private String supplier;
     private Long price;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cupcake", cascade = CascadeType.ALL)
     private Set<Order> orders = new HashSet<>();
 
-    public Product() {
+    public Cupcake() {
     }
 
-    public Product(String name, String supplier, Long price) {
+    public Cupcake(String name, String supplier, Long price) {
         this.name = name;
         this.supplier = supplier;
         this.price = price;

@@ -1,9 +1,9 @@
 package com.example.demo.Controller;
 
-import com.example.demo.Model.Product;
-import com.example.demo.Services.ProductAlreadyExistsException;
-import com.example.demo.Services.ProductNotFoundException;
-import com.example.demo.Services.ProductService;
+import com.example.demo.Model.Cupcake;
+import com.example.demo.Services.CupcakeAlreadyExistsException;
+import com.example.demo.Services.CupcakeNotFoundException;
+import com.example.demo.Services.CupcakeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,9 +15,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-public class ProductController {
+public class CupcakeController {
     @Autowired
-    private ProductService productService;
+    private CupcakeService cupcakeService;
     @GetMapping("/pindex")
     public String getIndexPage() {
         return "index";
@@ -25,12 +25,12 @@ public class ProductController {
 
     @GetMapping("/Product")
     public String showProductList(Model model) {
-        List<Product> productList = productService.listAll();
+        List<Cupcake> cupcakeList = cupcakeService.listAll();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         boolean isAdmin = authentication != null && authentication.getAuthorities().stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
 
-        model.addAttribute("productList", productList);
+        model.addAttribute("cupcakeList", cupcakeList); // Corrected attribute name
         model.addAttribute("isAdmin", isAdmin);  // Add isAdmin to the model
 
         return "Product/ProductList";
@@ -38,12 +38,12 @@ public class ProductController {
 
 
     @PostMapping("/Product/save")
-    public String saveProduct(@ModelAttribute Product product, RedirectAttributes ra) throws ProductAlreadyExistsException {
+    public String saveProduct(@ModelAttribute Cupcake cupcake, RedirectAttributes ra) throws CupcakeAlreadyExistsException {
        try {
-           productService.save(product);
+           cupcakeService.save(cupcake);
            ra.addFlashAttribute("message", "The product has been saved successfully :)");
 
-       }catch (ProductAlreadyExistsException e)
+       }catch (CupcakeAlreadyExistsException e)
        {
           ra.addFlashAttribute("message",e.getMessage());
        }
@@ -58,7 +58,7 @@ public class ProductController {
                     .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
 
             if (isAdmin) {
-                model.addAttribute("product", new Product());
+                model.addAttribute("product", new Cupcake());
                 return "Product/ProductAdd";
             } else {
                 return "redirect:/Product";  // Redirect non-admin users back to the product list
@@ -71,9 +71,9 @@ public class ProductController {
     @GetMapping("/Product/edit/{id}")
     public String showEditForm(@PathVariable("id") Long id, Model model, RedirectAttributes ra) {
         try {
-            Product product = productService.get(id);
-            model.addAttribute("product", product);
-        } catch (ProductNotFoundException e) {
+            Cupcake cupcake = cupcakeService.get(id);
+            model.addAttribute("product", cupcake);
+        } catch (CupcakeNotFoundException e) {
             ra.addFlashAttribute("message", "Product not found :(");
             return "redirect:/Product";
         }
@@ -81,11 +81,11 @@ public class ProductController {
     }
 
     @PostMapping("/Product/edit/{id}")
-    public String updateProduct(@PathVariable("id") Long id, @ModelAttribute Product product, RedirectAttributes ra) {
+    public String updateProduct(@PathVariable("id") Long id, @ModelAttribute Cupcake cupcake, RedirectAttributes ra) {
         try {
-            productService.updateProduct(id, product);
+            cupcakeService.updateProduct(id, cupcake);
             ra.addFlashAttribute("message", "The product has been updated successfully :)");
-        } catch (ProductNotFoundException e) {
+        } catch (CupcakeNotFoundException e) {
             ra.addFlashAttribute("message", "Product not found :(");
         }
         return "redirect:/Product";
@@ -95,9 +95,9 @@ public class ProductController {
     @GetMapping("/Product/delete/{id}")
     public String deleteProduct(@PathVariable("id") Long id, RedirectAttributes ra) {
         try {
-            productService.delete(id);
+            cupcakeService.delete(id);
             ra.addFlashAttribute("message", "The product with ID " + id + " has been deleted");
-        } catch (ProductNotFoundException e) {
+        } catch (CupcakeNotFoundException e) {
             ra.addFlashAttribute("message", e.getMessage());
         }
         return "redirect:/Product";

@@ -19,7 +19,7 @@ Max’s Homemade Cupcakes is an online platform designed to expand the reach of 
 
 Developed using Agile methodologies, Max’s Homemade Cupcakes provides a seamless digital experience for cupcake enthusiasts. The project was successfully delivered ahead of schedule and under budget, marking the transition from development to ongoing operations.
 
-**Project Manager:**Betül Gül
+Project Manager:Betül Gül
 ## Features
 
 - **User-Friendly Interface:** Modern, mobile-responsive design for optimal user experience.
